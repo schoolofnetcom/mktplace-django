@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} Login - Market Place{% endblock %}
+
+{% block content %}
+    <h3>Login</h3>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <input type="submit" value="Login">
+    </form>
+{% endblock %}

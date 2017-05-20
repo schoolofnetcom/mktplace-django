@@ -1,13 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Mercado Livre</title>
+    <title>{% block title %}Market Place{% endblock %}</title>
 
     <!--css's-->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/vendor/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/vendor/css/star-rating.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/css/star-rating.min.css' %}">
 </head>
 <body>
 
@@ -21,7 +22,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand navbar-brand-market-place" href="" title="Mercadp Livre" target="_blank" rel="nofollow">
-                <img alt="Brand" src="assets/img/logo-pt__large.png">
+                <img alt="Brand" src="{% static 'img/logo-pt__large.png' %}">
             </a>
         </div>
 
@@ -67,28 +68,7 @@
 <div class="page-market-place">
     <section class="section-content">
         <div class="container">
-
-
-
-            <h1>Copyright</h1>
-            <h2>Copyright</h2>
-            <h3>Copyright</h3>
-            <h4>Copyright</h4>
-
-            <ul>
-
-                <li>Copyright</li>
-                <li><a href="">Copyright</a></li>
-
-            </ul>
-
-
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium amet assumenda autem blanditiis dolores enim et eum expedita magni modi, molestiae neque obcaecati officiis quos repellat reprehenderit similique veniam?
-            </p>
-
-
-
+            {% block content %}{% endblock %}
         </div>
     </section>
 
@@ -105,10 +85,10 @@
 </div>
 
 <!--js's-->
-<script src="assets/js/vendor/jquery.min.js"></script>
-<script src="assets/js/vendor/bootstrap.min.js"></script>
-<script src="assets/js/vendor/star-rating.min.js"></script>
-<script src="assets/js/vendor/star-rating_locale_pt-br.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/vendor/star-rating.min.js' %}"></script>
+<script src="{% static 'js/vendor/star-rating_locale_pt-br.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
