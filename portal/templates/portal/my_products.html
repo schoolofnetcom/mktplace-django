@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Meus produtos - Market Place{% endblock %}
+
+{% block content %}
+    <h3>Meus anúncios</h3>
+    <br>
+    <p><a href="{% url 'product_new' %}">Novo anúncio</a></p>
+
+    <table class="table table_bordered">
+        <tr>
+            <th>Código</th>
+            <th>Título</th>
+            <th>Status</th>
+            <th>Ação</th>
+        </tr>
+
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.status }}</td>
+                <td><a href="{% url 'product_edit' product.id %}">Editar</a> </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

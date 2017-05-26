@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Meus produtos - Market Place{% endblock %}
+
+{% block content %}
+    <h3>Novo anúncio</h3>
+    <br>
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    </form>
+
+{% endblock %}

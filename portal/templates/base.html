@@ -15,13 +15,15 @@
 <nav class="navbar navbar-default navbar-market-place">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-market-place" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-market-place" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand navbar-brand-market-place" href="" title="Mercadp Livre" target="_blank" rel="nofollow">
+            <a class="navbar-brand navbar-brand-market-place" href="" title="Mercadp Livre" target="_blank"
+               rel="nofollow">
                 <img alt="Brand" src="{% static 'img/logo-pt__large.png' %}">
             </a>
         </div>
@@ -43,13 +45,18 @@
 
             <ul class="nav navbar-nav navbar-right navbar-right-market-place">
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span>CANDIDO_SOUZZA</span> <i class="fa fa-user-o"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Minha conta</a></li>
-                        <li><a href="#">Sair</a></li>
-                    </ul>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false"><span>{{ request.user }}</span> <i class="fa fa-user-o"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Minha conta</a></li>
+                            <li><a href="#">Sair</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Fazer Login</a></li>
+                {% endif %}
                 <li><a href="#"><i class="fa fa-bell-o"></i></a></li>
                 <li><a href="#"><i class="fa fa-heart-o"></i> </a></li>
                 <li><a href="#">Contato</a></li>
