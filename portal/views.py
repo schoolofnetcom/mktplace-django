@@ -1,8 +1,8 @@
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 
-from portal.forms import ProductForm
-from portal.models import Product, Category
+from portal.forms import ProductForm, ProductQuestionForm
+from portal.models import Product, Category, ProductQuestion
 
 
 def home(request):
@@ -77,3 +77,33 @@ def product_edit(request, product_id):
     }
 
     return render(request, 'portal/product_edit.html', context)
+
+
+def product_show(request, slug):
+    product = get_object_or_404(Product, slug=slug, status='Active')
+    questions = ProductQuestion.objects.filter(product=product, status='Active')
+    form = ProductQuestionForm()
+
+    context = {
+        'form': form,
+        'product': product,
+        'questions': questions
+    }
+
+    return render(request, 'portal/product_show.html', context)
+
+def product_question(request, product_id):
+
+    product = get_object_or_404(Product, id=product_id, status='Active')
+
+    if request.method == 'POST':
+        form = ProductQuestionForm(request.POST)
+        if form.is_valid():
+            question = ProductQuestion()
+            question.user = request.user
+            question.product = product
+            question.question = form.cleaned_data['question']
+            question.status = 'Active'
+            question.save()
+
+    return redirect('product_show', product.slug)

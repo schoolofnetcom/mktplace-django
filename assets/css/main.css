@@ -5940,7 +5940,8 @@ button.close {
   background-color: #f4f4f4;
   border-top: none;
   border-bottom: none;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  padding-top: 30px}
   .navbar-vip-market-place .vip-market-place-container {
     padding-bottom: 5px;
     border-bottom: 1px solid #ddd; }
@@ -5986,12 +5987,17 @@ button.close {
 .page-market-place .form-control {
   height: 40px; }
 
+.page-market-place textarea.form-control {
+   min-height: 150px;
+ }
+
 .page-market-place .btn {
   padding: 9px 12px; }
 
 /* fim content*/
 .section-header-market-place {
-  background-color: #f4f4f4; }
+  background-color: #f4f4f4;
+  padding-bottom: 30px;}
   .section-header-market-place h1 {
     font-size: 2.1em;
     text-align: center; }
@@ -6272,7 +6278,7 @@ button.close {
           text-transform: lowercase; }
 
 .section-warranty-market-place h2 {
-  margin-top: 80px;
+  margin-top: 60px;
   font-size: 2.1em;
   text-align: center; }
 
@@ -6412,7 +6418,8 @@ button.close {
       text-decoration: none;
       top: 22px; }
     .section-questions-market-place .questions-form textarea {
-      font-size: 0.9em; }
+      font-size: 0.9em;
+      margin-bottom: 10px}
   .section-questions-market-place .question-shipping-link {
     color: gray;
     position: relative;
@@ -6444,6 +6451,59 @@ button.close {
         font-size: 0.8em;
         color: #999; }
 
+html, body {
+    height: 100%;
+}
+.page-market-place {
+    height: 100%;
+}
+
+.section-content {
+    height: 100%;
+}
+.section-search img {
+  width: 100px;  }
+
+.section-search .media {
+  margin-bottom: 30px;
+    border-bottom: 1px solid #ddd}
+
+
+.section-search .media-body a h4 {
+color: #0033bb; }
+
+.section-search .media-body a p {
+  font-size: 1.2em;
+  color: #666; }
+
+.section-search .media-body .navbar-right p{
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-right: 20px;
+  color: #900;
+  position: relative;
+  bottom: 40px;}
+
+.section-search .media-body a:hover {
+  text-decoration: none }
+
+.section-search .list-group {
+    margin-left: 0;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    padding: 15px 0 15px 15px;
+}
+
+.section-search .list-group li{
+    list-style: none;
+}
+.section-search .list-group li.disabled{
+    padding: 0 0 10px 0;
+}
+
+.section-search .list-group li.subcategories {
+    padding-left: 10px;
+}
 .footer-market-place {
   background-color: #f7f7f7;
   border-top: 1px solid #eee;
@@ -6454,3 +6514,31 @@ button.close {
     font-size: 0.9em;
     color: #999;
     text-align: center; }
+.algolia-autocomplete {
+  width: 100%;
+}
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 100%;
+  min-height: 30px;
+  text-indent: 10px;
+}
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #999;
+  border-top: none;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #B2D7FF;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}

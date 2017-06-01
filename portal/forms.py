@@ -3,6 +3,13 @@ from django import forms
 from portal.models import Category, Product
 
 
+class ProductQuestionForm(forms.Form):
+    question = forms.CharField(
+        label='Perguntar',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'id':'question', 'placeholder':'Faça sua pergunta!'}),
+        required=True
+    )
+
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product

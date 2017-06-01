@@ -20,7 +20,10 @@
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.status }}</td>
-                <td><a href="{% url 'product_edit' product.id %}">Editar</a> </td>
+                <td>
+                    <a href="{% url 'product_edit' product.id %}">Editar</a> |
+                    <a href="{% url 'product_show' product.slug %}">Exibir</a>
+                </td>
             </tr>
         {% endfor %}
     </table>
