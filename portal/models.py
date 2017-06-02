@@ -31,6 +31,10 @@ class Product(models.Model):
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Inactive")
 
+    @property
+    def questions_no_answer(self):
+        return self.productquestion_set.filter(status='Active', productanswer__isnull=True)
+
     class Meta:
         verbose_name_plural = "Products"
 
@@ -45,32 +49,38 @@ class Product(models.Model):
         super(Product, self).save(*args, **kwargs)
 
 
+
+
 class ProductQuestion(models.Model):
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User)
     product = models.ForeignKey('Product')
     question = models.TextField()
     STATUS_CHOICES = (
         ('Active', 'Active'),
         ('Inactive', 'Inactive'),
     )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Inactive")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Active")
 
     class Meta:
         verbose_name_plural = "Product Questions"
+
+    @property
+    def get_answers(self):
+        return self.productanswer_set.filter()
 
     def __str__(self):
         return self.question
 
 
 class ProductAnswer(models.Model):
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User)
     product_question = models.ForeignKey(ProductQuestion)
     answer = models.TextField()
     STATUS_CHOICES = (
         ('Active', 'Active'),
         ('Inactive', 'Inactive'),
     )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Inactive")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Active")
 
     class Meta:
         verbose_name_plural = "Answers"

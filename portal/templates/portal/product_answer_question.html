@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Respondendo pergunta: {{ question.question }} - Market Place{% endblock %}
+
+{% block content %}
+    <section class="section-content">
+        <div class="container">
+            <h3>Respondendo perguntas: {{ product.name }}</h3>
+            <br>
+            <p><a href="{% url 'product_question' product.id %}">Voltar</a></p>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ question.question }}</div>
+                <div class="panel-body">
+                    <form class="questions-form" action="" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-info">Responder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

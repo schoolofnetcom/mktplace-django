@@ -1,19 +1,20 @@
 from django import forms
 
-from portal.models import Category, Product
+from portal.models import Category, Product, ProductAnswer
 
 
 class ProductQuestionForm(forms.Form):
     question = forms.CharField(
         label='Perguntar',
-        widget=forms.Textarea(attrs={'class': 'form-control', 'id':'question', 'placeholder':'Faça sua pergunta!'}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'id': 'question', 'placeholder': 'Faça sua pergunta!'}),
         required=True
     )
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        exclude = ('slug', 'user', )
+        exclude = ('slug', 'user',)
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -34,6 +35,23 @@ class ProductForm(forms.ModelForm):
             'description': "Descrição",
         }
 
+
+class AnswerQuestionForm(forms.ModelForm):
+    class Meta:
+        model = ProductAnswer
+        exclude = ('user', 'product_question', 'status')
+
+        widgets = {
+            'answer': forms.Textarea(attrs={
+                'class': 'form-control',
+                'id': 'answer',
+                'placeholder': 'Responda aqui...'
+            }),
+        }
+
+        labels = {
+            'answer': "Resposta"
+        }
 
 # class ProductForm(forms.Form):
 #     name = forms.CharField(label='Nome',

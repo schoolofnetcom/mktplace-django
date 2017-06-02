@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block title %}Meus anuncios - Market Place{% endblock %}
+{% block title %}{{ product.name }} - Market Place{% endblock %}
 
 {% block content %}
+
     <div class="page-market-place">
 
         <nav class="navbar navbar-default navbar-vip-market-place">
@@ -41,13 +42,17 @@
 
                         <div class="col-md-2 img-market-place-thumbnail">
 
-                            <img id="thumbnailML" src="{% static "img/01.jpg" %}" data-img="{% static "img/01.jpg" %}" alt="Tela 15.6">
+                            <img id="thumbnailML" src="{% static "img/01.jpg" %}" data-img="{% static "img/01.jpg" %}"
+                                 alt="Tela 15.6">
 
-                            <img id="thumbnailML" src="{% static "img/02.jpg" %}" data-img="{% static "img/02.jpg" %}" alt="Tela 15.6">
+                            <img id="thumbnailML" src="{% static "img/02.jpg" %}" data-img="{% static "img/02.jpg" %}"
+                                 alt="Tela 15.6">
 
-                            <img id="thumbnailML" src="{% static "img/03.jpg" %}" data-img="{% static "img/03.jpg" %}" alt="Tela 15.6">
+                            <img id="thumbnailML" src="{% static "img/03.jpg" %}" data-img="{% static "img/03.jpg" %}"
+                                 alt="Tela 15.6">
 
-                            <img id="thumbnailML" src="{% static "img/04.jpg" %}" data-img="{% static "img/04.jpg" %}" alt="Tela 15.6">
+                            <img id="thumbnailML" src="{% static "img/04.jpg" %}" data-img="{% static "img/04.jpg" %}"
+                                 alt="Tela 15.6">
 
                         </div>
 
@@ -70,7 +75,6 @@
                             </fieldset>
 
 
-
                             <fieldset class="form-market-place-quantity-selection">
                                 <legend>
                                     Quantidade:
@@ -78,7 +82,8 @@
 
                                 <div class="col-md-2 first-input-market-place">
                                     <div class="form-group">
-                                        <input class="form-control" name="quantity" type="number" title="Quantidade de unidades" value="1" >
+                                        <input class="form-control" name="quantity" type="number"
+                                               title="Quantidade de unidades" value="1">
                                     </div>
                                 </div>
 
@@ -118,8 +123,10 @@
                         <div class="col-md-10 warranty-market-place-media-body">
                             <div class="col-sx-12 col-md-12 warranty-market-place-media-content">
                                 <div class="warranty-media-content-info">
-                                    <p>Compra Garantida: <br> Receba o produto que espera ou devolvemos o seu dinheiro</p>
-                                    <p><span>Se houver algum problema ou se não receber o produto exatamente como o comprou, devolveremos o dinheiro.</span></p>
+                                    <p>Compra Garantida: <br> Receba o produto que espera ou devolvemos o seu dinheiro
+                                    </p>
+                                    <p><span>Se houver algum problema ou se não receber o produto exatamente como o comprou, devolveremos o dinheiro.</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -144,7 +151,6 @@
             </div>
         </section>
 
-
         <!--DESCRIÇÃO-->
         <section class="section-specs-market-place">
             <div class="container">
@@ -159,7 +165,36 @@
             </div>
         </section>
 
-        <!--PERGUNTAS-->
-       
+        <section class="section-questions-market-place">
+            <div class="container">
+                <header>
+                    <h2>Perguntas ao vendedor</h2>
+                </header>
 
+                <section class="section-questions-market-place-content">
+                    <form class="questions-form" action="{% url 'product_question_new' product.id %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-info">Perguntar</button>
+                    </form>
+
+                    <ul class="ml-questions-list">
+                        {% for q in questions %}
+                            <li>
+                                <article class="ml-questions-list-question">
+                                    <p><i class="fa fa-comment"></i> {{ q.question }}</p>
+                                </article>
+                                <article class="ml-questions-list-answer">
+                                    {% for a in q.get_answers %}
+                                        <p><i class="fa fa-comments"></i> {{ a.answer }}</p>
+                                    {% endfor %}
+                                </article>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            </div>
+        </section>
+
+    </div>
 {% endblock %}

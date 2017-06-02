@@ -3,16 +3,20 @@
 {% block title %}Meus produtos - Market Place{% endblock %}
 
 {% block content %}
-    <h3>Novo anúncio</h3>
-    <br>
+    <section class="section-content">
+        <div class="container">
+            <h3>Novo anúncio</h3>
+            <br>
 
-    <form action="" method="post">
+            <form action="" method="post">
 
-        {% csrf_token %}
+                {% csrf_token %}
 
-        {{ form.as_p }}
+                {{ form.as_p }}
 
-    <button type="submit" class="btn btn-success">Salvar</button>
-    </form>
+                <button type="submit" class="btn btn-success">Salvar</button>
+            </form>
+        </div>
+    </section>
 
 {% endblock %}

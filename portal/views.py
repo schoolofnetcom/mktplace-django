@@ -1,8 +1,8 @@
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 
-from portal.forms import ProductForm, ProductQuestionForm
-from portal.models import Product, Category, ProductQuestion
+from portal.forms import ProductForm, ProductQuestionForm, AnswerQuestionForm
+from portal.models import Product, Category, ProductQuestion, ProductAnswer
 
 
 def home(request):
@@ -92,8 +92,8 @@ def product_show(request, slug):
 
     return render(request, 'portal/product_show.html', context)
 
-def product_question(request, product_id):
 
+def product_new_question(request, product_id):
     product = get_object_or_404(Product, id=product_id, status='Active')
 
     if request.method == 'POST':
@@ -107,3 +107,40 @@ def product_question(request, product_id):
             question.save()
 
     return redirect('product_show', product.slug)
+
+
+def product_question(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    context = {
+        'product': product
+    }
+
+    return render(request, 'portal/product_question.html', context)
+
+
+def product_answer_question(request, product_id, question_id):
+    product = get_object_or_404(Product, pk=product_id)
+    question = get_object_or_404(ProductQuestion, pk=question_id)
+
+    form = AnswerQuestionForm()
+
+    if request.method == 'POST':
+        form = AnswerQuestionForm(request.POST)
+        if form.is_valid():
+            product_answer = ProductAnswer()
+            product_answer.user = request.user
+            product_answer.answer = form.cleaned_data['answer']
+            product_answer.product_question = question
+            product_answer.status = 'Active'
+            product_answer.save()
+
+            return redirect('product_question', product.id)
+
+    context = {
+        'form': form,
+        'product': product,
+        'question': question
+    }
+
+    return render(request, 'portal/product_answer_question.html', context)

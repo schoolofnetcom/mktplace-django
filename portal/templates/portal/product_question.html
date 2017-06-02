@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Perguntas do produto: {{ product.name }} - Market Place{% endblock %}
+
+{% block content %}
+    <section class="section-content">
+        <div class="container">
+            <h3>Perguntas do produto: {{ product.name }}</h3>
+            <br>
+            <p><a href="{% url 'my_products' %}">Voltar</a></p>
+
+            <table class="table table_bordered">
+                <tr>
+                    <th>Pergunta</th>
+                    <th>Ação</th>
+                </tr>
+
+                {% for question in product.questions_no_answer %}
+                    <tr>
+                        <td>{{ question.question }}</td>
+                        <td>
+                            <a href="{% url 'product_answer_question' product.id question.id %}">Responder</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+{% endblock %}
