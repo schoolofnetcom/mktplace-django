@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ajax_select',
+    'algoliasearch_django',
     'portal',
     'login',
 ]
@@ -127,3 +128,8 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = '/'
+
+ALGOLIA = {
+    'APPLICATION_ID': '5LA63JC8KY',
+    'API_KEY': '8e1b88f2e382b121815601b4c1f176ac'
+}

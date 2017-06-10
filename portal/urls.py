@@ -4,6 +4,9 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^search$', views.search, name='search'),
+
+
     url(r'^my_products$', views.my_products, name='my_products'),
     url(r'^product/new$', views.product_new, name='product_new'),
     url(r'^product/new/question/(?P<product_id>[\d]+)$', views.product_new_question, name='product_question_new'),
