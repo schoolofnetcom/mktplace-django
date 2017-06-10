@@ -13,7 +13,7 @@
                     <ol class="breadcrumb">
 
                         {% for category in product.categories.all %}
-                            <li><a href="" title="">{{ category.name }}</a></li>
+                            <li><a href="{% url 'search' %}?category={{ category.slug }}" title="">{{ category.name }}</a></li>
                         {% endfor %}
                         <li><a href="" title="">{{ product.name }}</a></li>
                     </ol>

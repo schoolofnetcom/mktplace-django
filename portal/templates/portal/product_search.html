@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Busca por produtos - Market Place{% endblock %}
+
+{% block content %}
+    <section class="section-content section-search">
+        <div class="container">
+            <div class="col-sm-12">
+                <h3>
+                    Busca por:
+                    {% if request.GET.qs %}
+                        {{ request.GET.qs }}
+                    {% else %}
+                        {{ cat_name }}
+                    {% endif %}
+                </h3>
+            </div>
+            <br>
+
+            <div class="col-sm-3">
+                <ul class="list-group">
+                    <li class="disabled">
+                        Categorias
+                    </li>
+                    {% for category in categories %}
+                        <li>
+                            <a href="{% url 'search' %}?category={{ category.slug }}">{{ category.name }}</a>
+                        </li>
+                        {% for subcategory in category.cat_child.all|dictsort:"name"|dictsort:"order" %}
+
+                            <li class="subcategories">
+                                <a href="{% url 'search' %}?category={{ subcategory.slug }}">
+                                    {{ subcategory.name }}
+                                </a>
+                            </li>
+
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-sm-9">
+
+                {% if results.hits %}
+
+                    {% for product in results.hits %}
+
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{% url 'product_show' product.slug %}">
+                                    <img src="{% static "img/01.jpg" %}" class="media-object">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{% url 'product_show' product.slug %}">
+                                    <h4 class="media-heading">{{ product.name }}</h4>
+                                    <p>{{ product.short_description }}</p>
+                                </a>
+                                <div class="navbar-right">
+                                    <p>R$ {{ product.price|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                    <nav>
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if results.page > 0 %}
+                                    <a href="?qs={{ results.query }}&page={{ previous_page }}">
+                                        <span>&laquo;</span>
+                                    </a>
+                                {% endif %}
+
+                                <span class="current">
+                                    Página {{ next_page }} de {{ results.nbPages }}
+                                </span>
+
+                                {% if results.page >= 0 and next_page < results.nbPages %}
+                                    <a href="?qs={{ results.query }}&page={{ next_page }}">
+                                    <span>&raquo;</span>
+                                    </a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </nav>
+                {% elif request.GET.category %}
+
+                    {% for product in results %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{% url 'product_show' product.slug %}">
+                                    <img src="{% static "img/01.jpg" %}" class="media-object">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{% url 'product_show' product.slug %}">
+                                    <h4 class="media-heading">{{ product.name }}</h4>
+                                    <p>{{ product.short_description }}</p>
+                                </a>
+                                <div class="navbar-right">
+                                    <p>R$ {{ product.price|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <nav>
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if results.has_previous %}
+                                    <a href="?category={{ str_category }}&page={{ results.previous_page_number }}">
+                                        <span>&laquo;</span>
+                                    </a>
+                                {% endif %}
+
+                                <span class="current">
+                                    Página {{ results.number }} de {{ results.paginator.num_pages }}
+                                </span>
+
+                                {% if results.has_next %}
+                                    <a href="?category={{ str_category }}&page={{ results.next_page_number }}">
+                                    <span>&raquo;</span>
+                                    </a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </nav>
+                {% else %}
+                    <p>Sem resultados para a busca: {{ request.GET.qs }}</p>
+                    <a href="{% url 'home' %}">Voltar para home</a>
+                {% endif %}
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
