@@ -13,7 +13,8 @@
                     <ol class="breadcrumb">
 
                         {% for category in product.categories.all %}
-                            <li><a href="{% url 'search' %}?category={{ category.slug }}" title="">{{ category.name }}</a></li>
+                            <li><a href="{% url 'search' %}?category={{ category.slug }}"
+                                   title="">{{ category.name }}</a></li>
                         {% endfor %}
                         <li><a href="" title="">{{ product.name }}</a></li>
                     </ol>
@@ -40,24 +41,22 @@
                     <!--IMAGENS-->
                     <div class="col-sm-6 section-img-market-place">
 
-                        <div class="col-md-2 img-market-place-thumbnail">
+                        <div class="col-md-2 img-market-place-thumbnail" style="max-height: 300px; overflow-y: scroll;">
 
-                            <img id="thumbnailML" src="{% static "img/01.jpg" %}" data-img="{% static "img/01.jpg" %}"
-                                 alt="Tela 15.6">
+                            {% for image in product.prod_images.all %}
+                                <img id="thumbnailML" src="{{ image.images }}" data-img="{{ image.images }}">
 
-                            <img id="thumbnailML" src="{% static "img/02.jpg" %}" data-img="{% static "img/02.jpg" %}"
-                                 alt="Tela 15.6">
+                            {% endfor %}
 
-                            <img id="thumbnailML" src="{% static "img/03.jpg" %}" data-img="{% static "img/03.jpg" %}"
-                                 alt="Tela 15.6">
-
-                            <img id="thumbnailML" src="{% static "img/04.jpg" %}" data-img="{% static "img/04.jpg" %}"
-                                 alt="Tela 15.6">
 
                         </div>
 
                         <div class="col-md-10">
-                            <img id="boxThumbnailML" src="{% static "img/01.jpg" %}" alt="Tela 15.6">
+                            {% if product.prod_images.first %}
+                            <img id="boxThumbnailML" src="{{ product.prod_images.first.images }}">
+                            {% else %}
+                                <img id="boxThumbnailML" src="{% static 'img/sem-imagem.jpg' %}">
+                            {% endif %}
                         </div>
 
                     </div>
@@ -172,11 +171,13 @@
                 </header>
 
                 <section class="section-questions-market-place-content">
-                    <form class="questions-form" action="{% url 'product_question_new' product.id %}" method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-info">Perguntar</button>
-                    </form>
+                    {% if request.user.is_authenticated %}
+                        <form class="questions-form" action="{% url 'product_question_new' product.id %}" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-info">Perguntar</button>
+                        </form>
+                    {% endif %}
 
                     <ul class="ml-questions-list">
                         {% for q in questions %}

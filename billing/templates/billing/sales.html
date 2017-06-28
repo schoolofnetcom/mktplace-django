@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Compra - Market Place{% endblock %}
+
+{% block content %}
+    <section class="section-content">
+        <div class="container">
+            <h3>Minhas vendas</h3>
+            <br>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Status da compra</th>
+                    <th>Status do pedido</th>
+                    <th>Ação</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.product.name|truncatechars:50 }}</td>
+                        <td>{{ order.total }}</td>
+                        <td>
+                            {% if order.status == 'Approved' %}
+                                Aprovado
+                            {% elif order.status == 'Pending' %}
+                                Pendente
+                            {% else %}
+                                Não autorizado
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ order.shipment_status }}
+                        </td>
+                        <td>
+                            <a href="{% url 'billing_change_shipment_status' order.id %}">
+                                Editar status
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </section>
+
+{% endblock %}

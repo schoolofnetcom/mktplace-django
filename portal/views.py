@@ -1,16 +1,30 @@
+from boto.s3.connection import S3Connection, Bucket
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 
-from portal.forms import ProductForm, ProductQuestionForm, AnswerQuestionForm
-from portal.models import Product, Category, ProductQuestion, ProductAnswer
+from portal.forms import ProductForm, ProductQuestionForm, AnswerQuestionForm, UserForm, UserProfileForm, \
+    S3DirectUploadForm
+from portal.models import Product, Category, ProductQuestion, ProductAnswer, UserProfile, ProductImages
 import algoliasearch_django as algoliasearch
 
 
 def home(request):
-    return render(request, 'portal/home.html', {})
+    categories = Category.objects.filter(hidden=False, parent__isnull=True) \
+        .exclude(categories__isnull=True) \
+        .order_by('name')
+
+    context = {
+        'categories': categories
+    }
+
+    return render(request, 'portal/home.html', context)
 
 
+@login_required
 def my_products(request):
     products = Product.objects.filter(user=request.user)
 
@@ -21,6 +35,7 @@ def my_products(request):
     return render(request, 'portal/my_products.html', context)
 
 
+@login_required
 def product_new(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -51,6 +66,7 @@ def product_new(request):
     return render(request, 'portal/product_new.html', context)
 
 
+@login_required
 def product_edit(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
@@ -95,6 +111,7 @@ def product_show(request, slug):
     return render(request, 'portal/product_show.html', context)
 
 
+@login_required
 def product_new_question(request, product_id):
     product = get_object_or_404(Product, id=product_id, status='Active')
 
@@ -111,6 +128,7 @@ def product_new_question(request, product_id):
     return redirect('product_show', product.slug)
 
 
+@login_required
 def product_question(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
@@ -121,6 +139,7 @@ def product_question(request, product_id):
     return render(request, 'portal/product_question.html', context)
 
 
+@login_required
 def product_answer_question(request, product_id, question_id):
     product = get_object_or_404(Product, pk=product_id)
     question = get_object_or_404(ProductQuestion, pk=question_id)
@@ -146,6 +165,66 @@ def product_answer_question(request, product_id, question_id):
     }
 
     return render(request, 'portal/product_answer_question.html', context)
+
+
+@login_required
+def product_images(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    images = ProductImages.objects.filter(product=product)
+
+    context = {
+        'product': product,
+        'images': images
+    }
+
+    return render(request, 'portal/product_images.html', context)
+
+
+@login_required
+def product_images_new(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    form = S3DirectUploadForm()
+
+    if request.method == 'POST':
+        form = S3DirectUploadForm(request.POST)
+        if form.is_valid():
+            upload = ProductImages()
+            upload.product = product
+            upload.images = form.cleaned_data['images']
+            upload.save()
+
+            return redirect('product_images', product_id)
+
+    context = {
+        'form': form,
+        'product': product
+    }
+
+    return render(request, 'portal/product_images_new.html', context)
+
+
+@login_required
+def prodcut_images_delete(request, product_id, image_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    if product.user != request.user:
+        redirect('honme')
+
+    image = get_object_or_404(ProductImages, pk=image_id)
+
+    s3conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+    bucket = Bucket(s3conn, settings.AWS_STORAGE_BUCKET_NAME)
+
+    name_image = image.images.split('/')
+
+    try:
+        bucket.delete_key('upload/images/' + name_image[-1])
+        image.delete()
+    except Exception as e:
+        print(e)
+
+    return redirect('product_images', product_id)
 
 
 def search(request):
@@ -193,3 +272,47 @@ def search(request):
     }
 
     return render(request, 'portal/product_search.html', context)
+
+
+@login_required
+def my_data(request):
+    user = User.objects.get(pk=request.user.pk)
+    user_form = UserForm(instance=user)
+
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+    except:
+        user_profile = UserProfile()
+        user_profile.user = user
+        user_profile.save()
+
+    profile_form = UserProfileForm(instance=user_profile)
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user.first_name = user_form.cleaned_data['first_name']
+            user.last_name = user_form.cleaned_data['last_name']
+            user.save()
+
+            user_profile.cpf = profile_form.cleaned_data['cpf']
+            user_profile.address = profile_form.cleaned_data['address']
+            user_profile.number = profile_form.cleaned_data['number']
+            user_profile.address2 = profile_form.cleaned_data['address2']
+            user_profile.city = profile_form.cleaned_data['city']
+            user_profile.district = profile_form.cleaned_data['district']
+            user_profile.state = profile_form.cleaned_data['state']
+            user_profile.country = profile_form.cleaned_data['country']
+            user_profile.zipcode = profile_form.cleaned_data['zipcode']
+            user_profile.phone = profile_form.cleaned_data['phone']
+            user_profile.remote_receiver_id = profile_form.cleaned_data['remote_receiver_id']
+            user_profile.save()
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'user': user
+    }
+
+    return render(request, 'portal/my_data.html', context)

@@ -25,6 +25,7 @@
                         <td>
                             <a href="{% url 'product_edit' product.id %}">Editar</a> |
                             <a href="{% url 'product_show' product.slug %}">Exibir</a> |
+                            <a href="{% url 'product_images' product.id %}">Imagens</a> |
                             <a href="{% url 'product_question' product.id %}">Perguntas
                                 {% if product.questions_no_answer.count >= 1 %}
                                     ({{ product.questions_no_answer.count }})

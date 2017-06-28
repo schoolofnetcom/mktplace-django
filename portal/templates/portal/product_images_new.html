@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Imagens do Produto - Nova - Market Place{% endblock %}
+
+{% block content %}
+    <section class="section-content">
+        <div class="container">
+            <h3>Imagens do produto: {{ product.name }}</h3>
+            <br>
+            <p>
+                <a href="{% url 'product_images' product.id %}">Voltar</a>
+            </p>
+            <form action="" method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button type="submit" class="btn btn-success">Salvar</button>
+            </form>
+        </div>
+    </section>
+    {{ form.media }}
+{% endblock %}

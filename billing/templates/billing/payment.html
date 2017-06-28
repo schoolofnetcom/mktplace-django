@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Compra - Market Place{% endblock %}
+
+{% block content %}
+    <section class="section-content">
+        <div class="container">
+            <h3>Comprando: {{ product.name }}</h3>
+            <br>
+            {% if error %}
+                <div class="alert alert-danger">
+                    Pagamento não aprovado. Tente novamente.
+                </div>
+            {% endif %}
+
+            <form action="" method="post">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button type="submit" class="btn btn-success">Comprar</button>
+            </form>
+        </div>
+    </section>
+
+{% endblock %}

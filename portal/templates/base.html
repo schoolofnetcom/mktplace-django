@@ -50,7 +50,9 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false"><span>{{ request.user }}</span> <i class="fa fa-user-o"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Minha conta</a></li>
+                            <li><a href="{% url 'my_data' %}">Meus dados</a></li>
+                            <li><a href="{% url 'billing_my_orders' %}">Minhas compras</a></li>
+                            <li><a href="{% url 'billing_sales' %}">Minhas vendas</a></li>
                             <li><a href="#">Sair</a></li>
                         </ul>
                     </li>

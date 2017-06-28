@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Perguntas do produto: {{ product.name }} - Market Place{% endblock %}
+
+{% block content %}
+    <section class="section-content">
+        <div class="container">
+            <h3>Imagens do produto: {{ product.name }}</h3>
+            <br>
+            <p><a href="{% url 'my_products' %}">Voltar</a> |
+                <a href="{% url 'product_images_new' product.id %}">Nova imagem</a>
+            </p>
+
+            <table class="table table_bordered">
+                <tr>
+                    <th>Imagem</th>
+                    <th>Ação</th>
+                </tr>
+
+                {% for image in images %}
+                    <tr>
+                        <td class="thumbnail">
+                            <img src="{{ image.images }}" style="height: 250px;">
+                        </td>
+                        <td>
+                            <a href="{% url 'product_images_delete' product.id image.id%}">Remover</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+{% endblock %}

@@ -1,11 +1,35 @@
 {% extends 'base.html' %}
-
+{% load staticfiles %}
 {% block title %}Página inicial - Market Place{% endblock %}
 
 {% block content %}
-    <section class="section-content">
+    <section class="section-content page-home">
         <div class="container">
-            <h3>Seja bem-vindo {{ request.user }}</h3>
+            <h2>Seja bem-vindo {{ request.user }}</h2>
+
+            {% for category in categories %}
+
+                <h3>{{ category.name }}:</h3>
+
+                <div class="row">
+                    {% for product in category.products %}
+
+                        <div class="col-sm-6 col-md-3">
+                            <a href="{% url 'product_show' product.slug %}">
+                                <div class="thumbnail">
+                                    <img src="{% static "img/01.jpg" %}">
+                                    <div class="caption">
+                                        <h3>{{ product.name|truncatechars:30 }}</h3>
+                                        <p>R$ {{ product.price }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% endfor %}
+
         </div>
     </section>
 {% endblock %}
